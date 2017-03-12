@@ -3,9 +3,16 @@ div.input_area {
  margin-top: 20%;
 }
 
-div.synonym_box {
-	padding-top: 100px;
+div.display_box {
+	padding-top: 1em;
 	width: 50%;
 	margin-left: 25%;
 	text-align: center;
+}
+
+p.type_title {
+    font-size: 1.3em;
+}
+p#syn_display {
+    padding-bottom: 20px;
 }
