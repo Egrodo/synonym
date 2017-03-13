@@ -2,7 +2,9 @@ function send_to_symonym(e) {
     if(event.keyCode == 13) {
         document.getElementById("syn_display").innerHTML = ""; //Clear the displays when enter is pressed to remove previous info.
         document.getElementById("sim_display").innerHTML = "";
+        document.getElementById("syn_title").innerHTML = "Synonyms";
 		var word = document.getElementsByName("input_word")[0].value; //Check if input is empty. Sanitize input. Accept input after a second of waiting instead of enter
+        var word = word.replace(/[^A-Za-z]+/ig, '')
         $.ajax({
             url: "https://words.bighugelabs.com/api/2/6497baacbb91c7feedadf10454978aea/" + word + "/json",
             dataType: 'json',
@@ -72,10 +74,21 @@ function send_to_symonym(e) {
                 }
             },
             error: function(xhr, textStatus, errorThrown) {
-               console.log("Erorr is: " + errorThrown); //Detect if 404, say no words, 500, nothing written, etc. ALSO REMOVE SYNONYM TITLE
+                if (xhr.status === 0) { //TODO If i get an error remove synonyms title.
+                    console.log("Couldn't connect to the API.");
+                    document.getElementById("syn_title").innerHTML = "Couldn't connect to the API.";
+                } else if (xhr.status === 404) {
+                    console.log("That word could not be found.");
+                    document.getElementById("syn_title").innerHTML = "That word wasn't found.";
+                } else if (xhr.status === 303) {
+                    console.log("That word wasn't found but I have a recommendation.");
+                } else if (xhr.status === 500) {
+                    console.log("You didn't type anything."); //Handle 500 Usage Exceeded and 500 Inactive Key.
+                    document.getElementById("syn_title").innerHTML = "You didn't type a word!";
+                }
            }
         })
-        if (typeof no_similars === "undefined") { //If exists, meaning if there are not similars.
+        if (typeof no_similars === "undefined") { //Remove similars title if there are no similar words to the input.
             console.log("Getting rid of similar title");
             document.getElementById("sim_title").style.display = "none";
         }
