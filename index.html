@@ -1,20 +1,33 @@
 <html>
 <head>
 <script src="https://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
-<script src="index.js" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css" href="index.css">
-</head>
+<script src="words.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="words.css">
+<link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+<title> Synonym Finder </title>
 <body>
+<div class="title_box">
+    <h1>
+        Synonym Finder
+    </h1>
+</div>
+
 <div class="input_area">
     <form onsubmit="return false">
-        <input id="word_box" type="text" name="input_word" onKeyDown="send_to_symonym(input_word)" autofocus>
+        <input spellcheck="true" autocomplete="off" onClick="this.setSelectionRange(0, this.value.length)" title="Type your word and press enter." id="word_box" type="text" name="input_word" onKeyDown="send_to_symonym(input_word)" autofocus>
     </form>
 </div>
 <div class="display_box">
-    <p id="syn_title" class="type_title"></p> <!-- This is where Synonyms title will go, but not before word was entered.. /-->
-    <p id="syn_display"></p>
-    <p id="sim_title" class="type_title">Similar Words:</p> <!-- Show this only after a word has been typed for the first time. AND if similar words exist./-->
-    <p id="sim_display"></p>
+    <h3 id="syn_title" class="type_title"></h3> <!-- This is where Synonyms title will go, but not before word was entered.. /-->
+    <div id="syn_display"></div>
+
+    <h3 id="sim_title" class="type_title">Similar Words:</h3> <!-- Show this only after a word has been typed for the first time. AND if similar words exist./-->
+    <div id="sim_display"></div>
+</div>
+
+<div class="footer">
+    <p style="display: inline; font-size: 15px">Made by </p><a class="footer_link" href="https://noahyamamoto.com" rel="_blank">Noah Yamamoto</a><p style="display: inline; font-size: 15px"> | </p><p style="display: inline; font-size: 12px;"> 2017</p>
 </div>
 </body>
 </html>
