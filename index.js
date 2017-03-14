@@ -14,110 +14,38 @@ function send_to_symonym(e) {
             success: function(data) {
 
                 console.log(data);
-                if ($(data.noun).length) { //handle all Nouns
-                    $(data.noun).each(function(index, value) {
-                        if (typeof value.syn !== "undefined") {
-                            console.log("Noun synonyms: " + value.syn);
-                            $.each(value.syn, function(index, value) {
-                                $("#syn_display").append("<a class='syn' target='_blank' href='http://www.dictionary.com/browse/" + value + "'>" + value + " </a>"); //appends display with next verb. Can add html into here.
-                            });
-                        } else {
-                            console.log("No noun synonyms.");
-                        }
-                        if (typeof value.sim === "undefined") { //if true there are no similars.
-                            delete no_similars;
-                            console.log("No noun similars.");
-                        } else { //Else there are similar words. Add title.
-                            console.log("Noun similars: " + value.sim);
-                            console.log("Adding similar title");
-                            document.getElementById("sim_title").style.display = "block";
-                            $.each(value.sim, function(index, value) {
-                                $("#sim_display").append("<a class='syn' target='_blank' href='http://www.dictionary.com/browse/" + value + "'>" + value + " </a>"); //appends display with next verb. Can add html into here.
-                            });
-                        }
-                    });
-                } else {
-                    console.log("No nouns.");
+                function perType(t) {
+                    if ($(data[t]).length) { //handle all Nouns
+                        $(data[t]).each(function(index, value) {
+                            if (typeof value.syn !== "undefined") {
+                                console.log(t + " synonyms: " + value.syn);
+                                $.each(value.syn, function(index, value) {
+                                    $("#syn_display").append("<a class='syn' target='_blank' href='http://www.dictionary.com/browse/" + value + "'>" + value + " </a>"); //appends display with next verb. Can add html into here.
+                                });
+                            } else {
+                                console.log("No " + t + " synonyms.");
+                            }
+                            if (typeof value.sim === "undefined") { //if true there are no similars.
+                                delete no_similars;
+                                console.log("No " + t + " similars.");
+                            } else { //Else there are similar words. Add title.
+                                console.log(t +  " similars: " + value.sim);
+                                console.log("Adding similar title");
+                                document.getElementById("sim_title").style.display = "block";
+                                $.each(value.sim, function(index, value) {
+                                    $("#sim_display").append("<a class='syn' target='_blank' href='http://www.dictionary.com/browse/" + value + "'>" + value + " </a>"); //appends display with next verb. Can add html into here.
+                                });
+                            }
+                        });
+                    } else {
+                        console.log("No " + t + "s.");
+                    }
                 }
-
-                if ($(data.adjective).length) { //handle all adjectives
-                    $(data.adjective).each(function(index, value) {
-                        if (typeof value.syn !== "undefined") {
-                            console.log("Adjective synonyms: " + value.syn);
-                            $.each(value.syn, function(index, value) {
-                                $("#syn_display").append("<a class='syn' target='_blank' href='http://www.dictionary.com/browse/" + value + "'>" + value + " </a>"); //appends display with next verb. Can add html into here.
-                            });
-                        } else {
-                            console.log("No adjective synonyms.");
-                        }
-                        if (typeof value.sim === "undefined") { //if true there are no similars.
-                            delete no_similars;
-                            console.log("No adjective similars.");
-                        } else { //Else there are similar words. Add title.
-                            console.log("Adjective similars: " + value.sim);
-                            console.log("Adding similar title");
-                            document.getElementById("sim_title").style.display = "block";
-                            $.each(value.sim, function(index, value) {
-                                $("#sim_display").append("<a class='syn' target='_blank' href='http://www.dictionary.com/browse/" + value + "'>" + value + " </a>"); //appends display with next verb. Can add html into here.
-                            });
-                        }
-                    });
-                } else {
-                    console.log("No adjectives.");
-                }
-
-                if ($(data.verb).length) { //handle all verbs
-                    $(data.verb).each(function(index, value) {
-                        if (typeof value.syn !== "undefined") {
-                            console.log("Verb synonyms: " + value.syn);
-                            $.each(value.syn, function(index, value) {
-                                $("#syn_display").append("<a class='syn' target='_blank' href='http://www.dictionary.com/browse/" + value + "'>" + value + " </a>"); //appends display with next verb. Can add html into here.
-                            });
-                        } else {
-                            console.log("No verb synonyms.");
-                        }
-                        if (typeof value.sim === "undefined") { //if true there are no similars.
-                            delete no_similars;
-                            console.log("No verb similars.");
-                        } else { //Else there are similar words. Add title.
-                            console.log("Verb similars: " + value.sim);
-                            console.log("Adding similar title");
-                            document.getElementById("sim_title").style.display = "block";
-                            $.each(value.sim, function(index, value) {
-                                $("#sim_display").append("<a class='syn' target='_blank' href='http://www.dictionary.com/browse/" + value + "'>" + value + " </a>"); //appends display with next verb. Can add html into here.
-                            });
-                        }
-                    });
-                } else {
-                    console.log("No verbs.");
-                }
-
-                if ($(data.adverb).length) { //handle all adverbs
-                    $(data.adverb).each(function(index, value) {
-                        if (typeof value.syn !== "undefined") {
-                            console.log("Adverb synonyms: " + value.syn);
-                            $.each(value.syn, function(index, value) {
-                                $("#syn_display").append("<a class='syn' target='_blank' href='http://www.dictionary.com/browse/" + value + "'>" + value + " </a>"); //appends display with next verb. Can add html into here.
-                            });
-                        } else {
-                            console.log("No adverb synonyms.");
-                        }
-                        if (typeof value.sim === "undefined") { //if true there are no similars.
-                            delete no_similars;
-                            console.log("No adverb similars.");
-                        } else { //Else there are similar words. Add title.
-                            console.log("Adding similar title");
-                            document.getElementById("sim_title").style.display = "block";
-                            $.each(value.sim, function(index, value) {
-                                console.log("Adverb similars: " + value.sim);
-                                $("#sim_display").append("<a class='syn' target='_blank' href='http://www.dictionary.com/browse/" + value + "'>" + value + " </a>"); //appends display with next verb. Can add html into here.
-                            });
-                        }
-                    });
-                } else {
-                    console.log("No adverbs.");
-                }
-
+                perType("adjective");
+                perType("noun");
+                perType("verb");
+                perType("adverb");
+                
             },
             error: function(xhr, textStatus, errorThrown) {
                 if (xhr.status === 0) {
