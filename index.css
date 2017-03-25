@@ -10,11 +10,43 @@ body {
     text-align: center;
     background-color: #fff4e5;
     font-family: 'Muli', sans-serif;
+    transition: background-color 1s ease;
+    -webkit-transition: background-color 1s ease;
+    -moz-transition: background-color 1s ease;
+    -o-transition: background-color 1s ease;
+}
+
+body.change {
+    background-color: #000B1A;
+    color: #fff4e5;
+}
+
+a.syn {
+    display: inline;
+    margin: 0 3px;
+    padding: 3px 5px;
+    font-size: 18px;
+    line-height: 1.9em;
+    background-color: #ffc77a;
+}
+
+a.syn.change {
+    background-color: #642892;
 }
 
 div.title_box {
     text-align: center;
+}
 
+div.title_box h1 {
+    display: inline;
+    cursor: pointer;
+-webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+     -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+          user-select: none
 }
 
 div.input_area {
@@ -48,23 +80,14 @@ input#word_box:hover, input#word_box:focus {
     background-color: white;
 }
 
-div#syn_display, div#sim_display {
+div#top_display, div#bot_display {
     padding-bottom: 20px;
     line-height: 28px;
     font-size: 16px;
 }
 
-h3#sim_title {
+h3.bot_title {
     display: none;
-}
-
-a.syn {
-    display: inline;
-    background-color: #ffc77a;
-    margin: 0 3px;
-    padding: 3px 5px;
-    font-size: 18px;
-    line-height: 1.8em;
 }
 
 a {
