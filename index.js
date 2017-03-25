@@ -1,6 +1,6 @@
 //TODO After user presses enter select text in input box ON DESKTOP ONLY.
 //TODO OR if that breaks mobile, re-focus input box on character type IF it's not selected already.
-//TODO present spamming. limit 1 request per second?
+//TODO Should I restrict spamming on the ant toggle as well? What would be better would be to store the ants instead of getting them again every time..
 //TODO On clicking ant toggle, if wordboxes are on screen, fade them out and fade in new ones.
 //TODO Is it possible to do anything about the non-perfect box sizing near edges of display_box?
 //BUG Error reponses not working.
@@ -78,49 +78,54 @@ function ant_toggle() { //TODO Keep text box selected after clicking antonyms TO
     }
 }
 
+
+var last_submit = 0;
 function send_to_symonym(e) {
     if(event.keyCode == 13) {
-        document.getElementById("top_display").innerHTML = ""; //Clear the displays when enter is pressed to remove previous info.
-        document.getElementById("bot_display").innerHTML = "";
-        document.getElementById("bot_title").removeAttribute("style");
-        $("#word_box").blur(); //Unfocuses input box after enter is pressed so the keyboard gets minimized on mobile.
-		word = document.getElementsByName("input_word")[0].value; //Check if input is empty. Sanitize input. Accept input after a second of waiting instead of enter
-        word = word.replace(/[^A-Za-z]+/ig, ''); //Sanitize inputs to only allow letters.
-        are_sims = false;
-        $.ajax({
-            url: "https://words.bighugelabs.com/api/2/6497baacbb91c7feedadf10454978aea/" + word + "/json",
-            dataType: "json",
-            type: "GET",
-            timeout: 5000,
-            success: function(data) {
-                word_data = data; //Give our data object to global so perType doesn't have to be inside the ajax funct.
-                console.log(data); //Log data for Chrome's nifty object inspection.
-                are_ants = false;
-                get_words();
-                if (ants_enabled === true) {
-                    ant_title();
-                } else if (ants_enabled === false & are_sims === false) {
-                    console.log("Removing sim title.");
-                    document.getElementById("bot_title").style.display = "none";
-                }
-            },
-            error: function(xhr, textStatus, errorThrown) {
-                if (xhr.status === 0) {
-                    console.log("Couldn't connect to the API.");
-                    console.log(xhr);
-                    document.getElementById("top_title").innerHTML = "No word found or couldn't connect to the API."; //usually is cannot connect to API, but giving this error code on no word found too..
-                } else if (xhr.status === 404) {
-                    console.log("That word could not be found.");
-                    document.getElementById("top_title").innerHTML = "No word found, check spelling?";
-                } else if (xhr.status === 303) {
-                    console.log("That word wasn't found but I have a recommendation.");
-                } else if (xhr.status === 500) {
-                    console.log("You didn't type anything."); //Handle 500 Usage Exceeded and 500 Inactive Key.
-                    document.getElementById("top_title").innerHTML = "You didn't type a word!";
-                }
-           }
-        });
-	}
+        if(Date.now() - last_submit > 1500) { //Restrict spamming, only allow one word per 1.5 seconds.
+            last_submit = Date.now();
+            document.getElementById("top_display").innerHTML = ""; //Clear the displays when enter is pressed to remove previous info.
+            document.getElementById("bot_display").innerHTML = "";
+            document.getElementById("bot_title").removeAttribute("style");
+            $("#word_box").blur(); //Unfocuses input box after enter is pressed so the keyboard gets minimized on mobile.
+    		word = document.getElementsByName("input_word")[0].value; //Check if input is empty. Sanitize input. Accept input after a second of waiting instead of enter
+            word = word.replace(/[^A-Za-z]+/ig, ''); //Sanitize inputs to only allow letters.
+            are_sims = false;
+            $.ajax({
+                url: "https://words.bighugelabs.com/api/2/6497baacbb91c7feedadf10454978aea/" + word + "/json",
+                dataType: "json",
+                type: "GET",
+                timeout: 5000,
+                success: function(data) {
+                    word_data = data; //Give our data object to global so perType doesn't have to be inside the ajax funct.
+                    console.log(data); //Log data for Chrome's nifty object inspection.
+                    are_ants = false;
+                    get_words();
+                    if (ants_enabled === true) {
+                        ant_title();
+                    } else if (ants_enabled === false & are_sims === false) {
+                        console.log("Removing sim title.");
+                        document.getElementById("bot_title").style.display = "none";
+                    }
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    if (xhr.status === 0) {
+                        console.log("Couldn't connect to the API.");
+                        console.log(xhr);
+                        document.getElementById("top_title").innerHTML = "No word found or couldn't connect to the API."; //usually is cannot connect to API, but giving this error code on no word found too..
+                    } else if (xhr.status === 404) {
+                        console.log("That word could not be found.");
+                        document.getElementById("top_title").innerHTML = "No word found, check spelling?";
+                    } else if (xhr.status === 303) {
+                        console.log("That word wasn't found but I have a recommendation.");
+                    } else if (xhr.status === 500) {
+                        console.log("You didn't type anything."); //Handle 500 Usage Exceeded and 500 Inactive Key.
+                        document.getElementById("top_title").innerHTML = "You didn't type a word!";
+                    }
+               }
+            });
+    	}
+    }
 }
 
 function ant_title() {
