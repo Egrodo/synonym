@@ -1,9 +1,10 @@
 //TODO After user presses enter select text in input box ON DESKTOP ONLY.
 //TODO OR if that breaks mobile, re-focus input box on character type IF it's not selected already.
-//TODO Should I restrict spamming on the ant toggle as well? What would be better would be to store the ants instead of getting them again every time..
+//TODO Should I restrict spamming on the ant toggle as well? What would be better would be to store the wordtypes instead of getting them again every time..
 //TODO On clicking ant toggle, if wordboxes are on screen, fade them out and fade in new ones.
 //TODO Is it possible to do anything about the non-perfect box sizing near edges of display_box?
 //BUG Error reponses not working.
+//BUG Entering a valid word, then entering a non-valid word, then switching to ants instead uses previosly valid word.
 var ants_enabled = false; //Antonyms off by default.
 var are_ants = false; //This is used for checking if ants of any value exist so we can add or remove the ant title.
 var are_sims = false;
@@ -57,11 +58,11 @@ function ant_toggle() { //TODO Keep text box selected after clicking antonyms TO
     if (ants_enabled === false) { //These need to check if an error was thrown most recently.
         console.log("Enabling antonyms.")
         ants_enabled = true;
-        document.getElementById("title").innerHTML = "Antonym Finder"; //Change title text.
+        document.getElementById("title").innerHTML = "Antonym Finder";
         $("body").addClass("change");
         if (typeof word_data !== "undefined") {
             document.getElementById("top_title").innerHTML = "";
-            get_words(); //BUG If user clicks synonym finder twice faster than 500ms, it doubles the output.
+            get_words();
         }
         $(".syn").addClass("change");
         ant_title();
