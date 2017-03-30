@@ -1,17 +1,10 @@
-//TODO After user presses enter select text in input box ON DESKTOP ONLY.
-//TODO OR if that breaks mobile, re-focus input box on character type IF it's not selected already.
-//TODO Should I restrict spamming on the ant toggle as well? What would be better would be to store the wordtypes instead of getting them again every time..
-//TODO On clicking ant toggle, if wordboxes are on screen, fade them out and fade in new ones.
-//TODO Is it possible to do anything about the non-perfect box sizing near edges of display_box?
-//BUG Error reponses not working.
-//BUG Entering a valid word, then entering a non-valid word, then switching to ants instead uses previosly valid word.
 var ants_enabled = false; //Antonyms off by default.
 var are_ants = false; //This is used for checking if ants of any value exist so we can add or remove the ant title.
 var are_sims = false;
 function perType(t, data) {
     if ($(data[t]).length) { //handle all words of type t
         $(data[t]).each(function(index, value) {
-            if (ants_enabled === false) { //If we're not working with antonyms. TODO switch this around. WHy false first?
+            if (ants_enabled === false) { //If we're not working with antonyms.
                 document.getElementById("top_title").innerHTML = "Synonyms:";
                 if (typeof value.syn !== "undefined") {
                     console.log(t + " synonyms: " + value.syn);
@@ -39,7 +32,7 @@ function perType(t, data) {
                     $.each(value.ant, function(index, value) {
                         $("#top_display").append("<a class='syn' target='_blank' href='http://www.dictionary.com/browse/" + value + "'>" + value + " </a>");
                     });
-                    $(".syn").addClass("change"); //TODO this needs to be here but I don't remember why.
+                    $(".syn").addClass("change");
                 } else {
                     console.log("No " + t + " antonyms.");
                 }
@@ -50,11 +43,10 @@ function perType(t, data) {
     }
 }
 
-function ant_toggle() { //TODO Keep text box selected after clicking antonyms TODO Synonyms is showing up after toggling on and off.
+function ant_toggle() { 
     document.getElementById("top_display").innerHTML = ""; //Clear displays when type toggled so can append new of correct type.
     document.getElementById("bot_display").innerHTML = "";
     document.getElementById("bot_title").removeAttribute("style"); //Clear sim title.
-    //are_sims = false; //TODO figure out why I had this here at some point..
     if (ants_enabled === false) { //These need to check if an error was thrown most recently.
         console.log("Enabling antonyms.")
         ants_enabled = true;
@@ -113,7 +105,7 @@ function send_to_symonym(e) {
                     if (xhr.status === 0) {
                         console.log("Couldn't connect to the API.");
                         console.log(xhr);
-                        document.getElementById("top_title").innerHTML = "No word found or couldn't connect to the API."; //usually is cannot connect to API, but giving this error code on no word found too..
+                        document.getElementById("top_title").innerHTML = "Couldn't connect to the API.";
                     } else if (xhr.status === 404) {
                         console.log("That word could not be found.");
                         document.getElementById("top_title").innerHTML = "No word found, check spelling?";
